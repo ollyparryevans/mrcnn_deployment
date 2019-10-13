@@ -171,6 +171,7 @@ class ShapesDataset(utils.Dataset):
         Returns the background color of the image and a list of shape
         specifications that can be used to draw the image.
         """
+        random.seed(42)
         # Pick random background color
         bg_color = np.array([random.randint(0, 255) for _ in range(3)])
         # Generate a few random shapes and record their
