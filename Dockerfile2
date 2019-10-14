@@ -1,5 +1,12 @@
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
-MAINTAINER Gabriel Garza <garzagabriel@gmail.com>
+FROM ubuntu:16.04
+
+RUN mkdir /app
+WORKDIR /app
+
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+ADD . /app/
 
 # Essentials: developer tools, build tools, OpenBLAS
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -24,31 +31,6 @@ RUN apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev && \
 RUN pip3 --no-cache-dir install \
     numpy scipy sklearn scikit-image==0.13.1 pandas matplotlib Cython requests pandas imgaug
 
-# Install AWS CLI
-RUN pip3 --no-cache-dir install awscli --upgrade
-
-#
-# Jupyter Notebook
-#
-# Allow access from outside the container, and skip trying to open a browser.
-# NOTE: disable authentication token for convenience. DON'T DO THIS ON A PUBLIC SERVER.
-RUN pip3 --no-cache-dir install jupyter && \
-    mkdir /root/.jupyter && \
-    echo "c.NotebookApp.ip = '*'" \
-         "\nc.NotebookApp.open_browser = False" \
-         "\nc.NotebookApp.token = ''" \
-         > /root/.jupyter/jupyter_notebook_config.py
-EXPOSE 8888
-
-#
-# Tensorflow 1.6.0 - GPU
-#
-# Install TensorFlow
-RUN pip3 --no-cache-dir install tensorflow-gpu
-
-# Expose port for TensorBoard
-EXPOSE 6006
-
 #
 # OpenCV 3.4.1
 #
@@ -62,7 +44,7 @@ RUN pip3 install opencv-python
 #
 # Keras 2.1.5
 #
-RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
+RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras Flask
 
 #
 # PyCocoTools
@@ -72,8 +54,8 @@ RUN pip3 install --no-cache-dir --upgrade h5py pydot_ng keras
 # but it doesn't seem to be active anymore.
 RUN pip3 install --no-cache-dir git+https://github.com/waleedka/coco.git#subdirectory=PythonAPI
 
-COPY setup_project_and_data.sh /home
-COPY train.sh /home
-COPY predict.sh /home
+ENV FLASK_APP=mrcnn/app.py
 
-WORKDIR "/home"
+EXPOSE 5000
+
+CMD ["flask", "run"]
