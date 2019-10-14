@@ -80,6 +80,7 @@ class ShapesDataset(utils.Dataset):
         # Generate random specifications of images (i.e. color and
         # list of shapes sizes and locations). This is more compact than
         # actual images. Images are generated on the fly in load_image().
+        random.seed(42)
         for i in range(count):
             bg_color, shapes = self.random_image(height, width)
             self.add_image("shapes", image_id=i, path=None,

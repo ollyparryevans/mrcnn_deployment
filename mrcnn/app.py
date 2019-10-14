@@ -9,8 +9,6 @@ import mrcnn.model as modellib
 from mrcnn import visualize
 from samples.coco import coco
 
-app = Flask(__name__)
-
 ROOT_DIR = os.path.abspath("../")
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
