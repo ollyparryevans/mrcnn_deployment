@@ -49,7 +49,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = ROOT_DIR + UPLOAD_FOLDER
-PROCESSED_IMAGES = os.path.join('static', 'processed_images')
+PROCESSED_IMAGES = 'static/processed_images/'
 app.config['PROCESSED_FOLDER'] = PROCESSED_IMAGES
 
 
