@@ -8,14 +8,14 @@ Clone the repo and cd into the top level of the directory.
 
 Build the docker image.
 
-'''bash
+```bash
 docker build -t mrcnn_docker -f Dockerfile .
-'''
+```
 
 Run the container.
 
-'''bash
+```bash
 docker run -p 5000:5000 -it mrcnn_docker
-'''
+```
 
 The container will run the flask app on http://0.0.0.0:5000 
